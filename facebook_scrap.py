@@ -42,6 +42,7 @@ class HandleBrowser():
         self.driver.find_element_by_id('loginbutton').click() 
 
     def  publish_post(self):
+
         msg = "WelCome to Webllisto Family ,We provide expert web advancement solutions 10."
         time.sleep(5)
         try:
@@ -51,17 +52,16 @@ class HandleBrowser():
             time.sleep(5)
         except :
             pass
-        self.logout()
+        self.scarping_post()
 
     def scarping_post(self):
 
-        self.driver.get('https://www.facebook.com/systango/')
+        self.driver.get('https://www.facebook.com/')
         try:
             posts =  self.driver.find_elements_by_xpath("//div [@data-testid='post_message']")
             with open('facebook.csv', mode='w') as facebook_file:
                 scrape_data = csv.writer(facebook_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 for post in posts:
-                    import pdb;pdb.set_trace
                     post1 = post.text
                     ids = post.id
                     employee_writer.writerow([ids, post1])
@@ -89,8 +89,7 @@ class HandleBrowser():
             self.driver.find_element_by_class_name("_666k").click()
         except:
             pass
-
-
+        self.replied_comment()
 
 
     def logout(self):
@@ -110,7 +109,7 @@ class HandleBrowser():
 
 if __name__ == '__main__':
     browser = HandleBrowser()
-    browser.login()
+    # browser.login()
     for arg in browser.argument:
         if arg == 'scrape_page':
             browser.scarping_post()
