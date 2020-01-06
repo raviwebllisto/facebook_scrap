@@ -21,18 +21,14 @@ class HandleBrowser():
         self.chrome_options.add_argument("--disable-dev-shm-usage");
         self.chrome_options.add_experimental_option("excludeSwitches", ["ignore-certificate-errors", "safebrowsing-disable-download-protection", "safebrowsing-disable-auto-update", "disable-client-side-phishing-detection"])
         self.chrome_options.add_argument("user-data-dir=/home/lenovo/.config/google-chrome/Default") #Path to your chrome profile
-        # self.driver = webdriver.Chrome(options=self.chrome_options, executable_path="/home/dell/.config/google-chrome/Default")
         self.driver = webdriver.Chrome(options=self.chrome_options)
-        # self.driver = webdriver.Chrome("/usr/bin/chromedriver")
         self.driver.get('https://www.facebook.com/')
-        executor_url = self.driver.command_executor._url
-        session_id = self.driver.session_id
         self.argument = sys.argv 
 
 
     def login(self):        
-        username = "rajeev.webllisto@gmail.com"
-        password = "ravi72842"
+        username = "xyz@gmail.com"
+        password = "password"
          
         a = self.driver.find_element_by_id('email')  
         a.send_keys(username) 
@@ -75,12 +71,11 @@ class HandleBrowser():
 
     def comment_on_post(self):
 
-        self.driver.get('https://www.facebook.com/bytecipher/posts/872661363150426')
+        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/101114511421112')
         try:
-            # self.driver.find_element_by_xpath("//div [@data-testid='UFI2CommentsList/root_depth_0']").click()
             self.driver.find_element_by_class_name("_7c-t").click()            
             time.sleep(5)
-            self.driver.find_element_by_class_name("_1mf").send_keys("Very good ")
+            self.driver.find_element_by_class_name("_1mf").send_keys("Nice... ")
             time.sleep(5)
             self.driver.find_element_by_class_name("_1mf").send_keys(Keys.ENTER)
         except:
@@ -89,7 +84,7 @@ class HandleBrowser():
 
     def like_on_post(self):
 
-        self.driver.get('https://www.facebook.com/bytecipher/posts/872661363150426')
+        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/101114511421112')
         try:
             self.driver.find_element_by_class_name("_666k").click()
         except:
@@ -115,7 +110,7 @@ class HandleBrowser():
 
 if __name__ == '__main__':
     browser = HandleBrowser()
-    # browser.login()
+    browser.login()
     for arg in browser.argument:
         if arg == 'scrape_page':
             browser.scarping_post()
@@ -123,3 +118,5 @@ if __name__ == '__main__':
             browser.publish_post()
         if arg == 'comment':
             browser.comment_on_post()
+        if arg == 'like':
+            browser.like_on_post()
