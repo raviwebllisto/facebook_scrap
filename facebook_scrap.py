@@ -56,15 +56,16 @@ class HandleBrowser():
 
     def scarping_post(self):
 
-        self.driver.get('https://www.facebook.com/')
+        self.driver.get('https://www.facebook.com/bytecipher/')
         try:
             posts =  self.driver.find_elements_by_xpath("//div [@data-testid='post_message']")
+            time.sleep(5)
             with open('facebook.csv', mode='w') as facebook_file:
                 scrape_data = csv.writer(facebook_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 for post in posts:
                     post1 = post.text
-                    ids = post.id
-                    employee_writer.writerow([ids, post1])
+                    ids = post.find_element_by_xpath("//a[@class ='_5pcq']").get_attribute("href")
+                    scrape_data.writerow([ids, post1])
         except:
             pass
         self.comment_on_post()
@@ -89,8 +90,6 @@ class HandleBrowser():
             self.driver.find_element_by_class_name("_666k").click()
         except:
             pass
-        self.replied_comment()
-
 
     def logout(self):
         try:
@@ -109,7 +108,7 @@ class HandleBrowser():
 
 if __name__ == '__main__':
     browser = HandleBrowser()
-    # browser.login()
+    browser.login()
     for arg in browser.argument:
         if arg == 'scrape_page':
             browser.scarping_post()
