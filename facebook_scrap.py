@@ -2,9 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 import os
-# import urllib.request 
 import csv
-# import validators
 import sys
 
 from selenium.webdriver.common.keys import Keys
