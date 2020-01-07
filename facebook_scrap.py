@@ -55,7 +55,7 @@ class HandleBrowser():
 
 
     def scarping_post(self):
-        self.driver.get('https://www.facebook.com/andrew.jhon.90834')
+        self.driver.get('https://www.facebook.com/ecgjobsinindore/')
         time.sleep(5)
         try:
             posts =  self.driver.find_elements_by_xpath("//div [@data-testid='post_message']")
@@ -89,14 +89,14 @@ class HandleBrowser():
 
 
     def replied_comment(self):
-        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/104715371061026')
+        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/104715371061026?comment_id=104830131049550')
         time.sleep(7)
         try:
             self.driver.find_element_by_class_name("_6qw5").click()
             time.sleep(4)
             self.driver.find_element_by_xpath("//a[@data-testid='UFI2Comment/reply-link']").click()            
             time.sleep(4)
-            self.driver.find_element_by_class_name("_1mf").send_keys("Thank You... ")
+            self.driver.find_element_by_class_name("_1mf").send_keys("Hey, How are You... ")
             time.sleep(5)
             self.driver.find_element_by_class_name('_1mf').send_keys(Keys.ENTER)
         except:
@@ -143,8 +143,9 @@ class HandleBrowser():
 
 if __name__ == '__main__':
     browser = HandleBrowser()
-    browser.login()
     for arg in browser.argument:
+        if arg == 'login':
+            browser.login()
         if arg == 'scrape_page':
             browser.scarping_post()
         if arg == 'publish_post':
