@@ -15,6 +15,7 @@ class HandleBrowser():
     
     CONTENT_LIST = [{'content_type': 'text', 'data': 'Lorem ipsum'}] 
 
+
     def __init__(self):
         self.chrome_options = Options()
         self.chrome_options.add_argument("--no-sandbox")
@@ -41,69 +42,100 @@ class HandleBrowser():
         # submit button clicked 
         self.driver.find_element_by_id('loginbutton').click() 
 
-    def  publish_post(self):
 
+    def  publish_post(self):
         msg = "WelCome to Webllisto Family ,We provide expert web advancement solutions 10."
         time.sleep(5)
         try:
             self.driver.find_element_by_xpath("//textarea[@name='xhpc_message']").send_keys(msg)
-            time.sleep(5)
+            time.sleep(10)
             self.driver.find_element_by_xpath("//*[text()='Post']").click()
             time.sleep(5)
         except :
             pass
-        self.scarping_post()
+        # self.scarping_post()
+
 
     def scarping_post(self):
-
-        self.driver.get('https://www.facebook.com/bytecipher/')
+        self.driver.get('https://www.facebook.com/andrew.jhon.90834')
+        time.sleep(5)
         try:
             posts =  self.driver.find_elements_by_xpath("//div [@data-testid='post_message']")
-            time.sleep(5)
+            ids = self.driver.find_elements_by_xpath("//a[@class ='_5pcq']")
+            
             with open('facebook.csv', mode='w') as facebook_file:
                 scrape_data = csv.writer(facebook_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                for post in posts:
+                for post,fb_id in zip(posts, ids):
                     post1 = post.text
-                    ids = post.find_element_by_xpath("//a[@class ='_5pcq']").get_attribute("href")
-                    scrape_data.writerow([ids, post1])
+                    ides = fb_id.get_attribute("href")
+                    scrape_data.writerow([ides, post1])
         except:
             pass
-        self.comment_on_post()
+        self.logout()
+
 
     def comment_on_post(self):
-
-        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/101114511421112')
+        url = 'andrew.jhon.90834/posts/103902851142278'
+        self.driver.get( 'https://www.facebook.com/{}'.format(url))
+        time.sleep(7)
         try:
             self.driver.find_element_by_class_name("_7c-t").click()            
             time.sleep(5)
-            self.driver.find_element_by_class_name("_1mf").send_keys("Nice... ")
-            time.sleep(5)
+            self.driver.find_element_by_class_name("_1mf").send_keys("which profile... ")
+            time.sleep(4)
             self.driver.find_element_by_class_name("_1mf").send_keys(Keys.ENTER)
         except:
             pass
-        self.like_on_post()
+        self.logout()
+
+
+    def replied_comment(self):
+        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/101112214754675?comment_id=103822841150279')
+        time.sleep(7)
+        try:
+            self.driver.find_element_by_class_name("_1p1v").click()
+            time.sleep(2)
+            self.driver.find_element_by_class_name("_1mf").send_keys("Thank You... ")
+            time.sleep(5)
+            self.driver.find_element_by_class_name('_1mf').send_keys(Keys.ENTER)
+        except:
+            pass
+
+
 
     def like_on_post(self):
-
-        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/101114511421112')
+        url = 'bytecipher/posts/879532995796596?__tn__=-R'
+        self.driver.get( 'https://www.facebook.com/{}'.format(url))
         try:
+            time.sleep(4)
             self.driver.find_element_by_class_name("_666k").click()
         except:
             pass
 
+
     def logout(self):
         try:
             self.driver.find_element_by_class_name("_6qfu").click()
-            time.sleep(2)
+            time.sleep(4)
             self.driver.find_element_by_class_name("_64kz").click()
             self.chrome_options.add_argument("--disable-dev-shm-usage")
-            time.sleep(5)
+            time.sleep(4)
         except:
             pass
         self.close_driver()
 
+
     def close_driver(self):
         self.driver.close()
+
+
+    def read_csv(self):
+        path = '/home/lenovo/DRF_starter/facebook_scrap/'
+        file=open( path +"facebook.csv", "r")
+        reader = csv.reader(file)
+        for line in reader:
+            t=line[0]
+            print(t)
 
 
 if __name__ == '__main__':
@@ -118,3 +150,7 @@ if __name__ == '__main__':
             browser.comment_on_post()
         if arg == 'like':
             browser.like_on_post()
+        if arg == 'reply':
+            browser.replied_comment()
+        if arg == 'read':
+            browser.read_csv()
