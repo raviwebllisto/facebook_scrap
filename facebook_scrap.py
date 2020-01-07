@@ -30,7 +30,7 @@ class HandleBrowser():
     def login(self):        
         username = "xyz@gmail.com"
         password = "password"
-         
+        time.sleep(7)
         a = self.driver.find_element_by_id('email')  
         a.send_keys(username) 
         time.sleep(5)
@@ -53,7 +53,7 @@ class HandleBrowser():
             time.sleep(5)
         except :
             pass
-        # self.scarping_post()
+        self.logout()
 
 
     def scarping_post(self):
@@ -75,32 +75,35 @@ class HandleBrowser():
 
 
     def comment_on_post(self):
-        url = 'andrew.jhon.90834/posts/103902851142278'
+        url = 'andrew.jhon.90834/posts/104715371061026'
         self.driver.get( 'https://www.facebook.com/{}'.format(url))
         time.sleep(7)
         try:
             self.driver.find_element_by_class_name("_7c-t").click()            
             time.sleep(5)
-            self.driver.find_element_by_class_name("_1mf").send_keys("which profile... ")
+            self.driver.find_element_by_class_name("_1mf").send_keys("Nice... ")
             time.sleep(4)
             self.driver.find_element_by_class_name("_1mf").send_keys(Keys.ENTER)
         except:
             pass
+            time.sleep(20)
         self.logout()
 
 
     def replied_comment(self):
-        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/101112214754675?comment_id=103822841150279')
+        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/104715371061026')
         time.sleep(7)
         try:
-            self.driver.find_element_by_class_name("_1p1v").click()
-            time.sleep(2)
+            self.driver.find_element_by_class_name("_6qw5").click()
+            time.sleep(4)
+            self.driver.find_element_by_xpath("//a[@data-testid='UFI2Comment/reply-link']").click()            
+            time.sleep(4)
             self.driver.find_element_by_class_name("_1mf").send_keys("Thank You... ")
             time.sleep(5)
             self.driver.find_element_by_class_name('_1mf').send_keys(Keys.ENTER)
         except:
             pass
-
+        self.logout()
 
 
     def like_on_post(self):
@@ -111,6 +114,7 @@ class HandleBrowser():
             self.driver.find_element_by_class_name("_666k").click()
         except:
             pass
+        self.logout()
 
 
     def logout(self):
@@ -136,6 +140,7 @@ class HandleBrowser():
         for line in reader:
             t=line[0]
             print(t)
+
 
 
 if __name__ == '__main__':
