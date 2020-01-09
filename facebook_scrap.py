@@ -51,46 +51,75 @@ class HandleBrowser():
             time.sleep(5)
         except :
             pass
-        self.logout()
+        self.close_driver()
 
 
     def scarping_post(self):
-        self.driver.get('https://www.facebook.com/ecgjobsinindore/')
+        self.driver.get('https://www.facebook.com/groups/2019264428159592/')
         time.sleep(5)
         try:
-            posts =  self.driver.find_elements_by_xpath("//div [@data-testid='post_message']")
+            lenOfPage = self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+            match=False
+            while(match==False):
+                lastCount = lenOfPage
+                time.sleep(3)
+                lenOfPage = self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+                if lastCount==lenOfPage:
+                    match=True
+            ides=[]
             ids = self.driver.find_elements_by_xpath("//a[@class ='_5pcq']")
-            
+            for i in ids:
+                ides.append(i.get_attribute("href"))
+            print(ides)
             with open('facebook.csv', mode='w') as facebook_file:
                 scrape_data = csv.writer(facebook_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                for post,fb_id in zip(posts, ids):
-                    post1 = post.text
-                    ides = fb_id.get_attribute("href")
-                    scrape_data.writerow([ides, post1])
+                for urls in ides:
+                    try:
+                        self.driver.get(urls)
+                        time.sleep(10)
+                        posts =  self.driver.find_element_by_xpath("//div [@data-testid='post_message']").text
+                        if posts:
+                            post2 = posts.encode('ascii', 'ignore')
+                            scrape_data.writerow([urls, post2])
+                        else:
+                            print("posts not found")
+                    except Exception as e:
+                        print("error", e)
+        except Exception as e:
+            print("error", e)
+
+    def scrap_images(self):
+        self.driver.get('https://www.facebook.com/ravi.gurjar.148553')
+        try:
+            images = self.driver.find_elements_by_xpath("//a [@rel='theater']")
+            with open('image.csv', mode='w') as facebook_file:
+                scrape_data = csv.writer(facebook_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                for image in images:
+                    image_url = image.get_attribute("href")
+                    scrape_data.writerow([image_url])
+
         except:
             pass
-        self.logout()
-
 
     def comment_on_post(self):
-        url = 'andrew.jhon.90834/posts/104715371061026'
+        url = 'ravi.gurjar.148553/posts/2497266420494711?__tn__=-R'
         self.driver.get( 'https://www.facebook.com/{}'.format(url))
-        time.sleep(7)
+        time.sleep(10)
         try:
             self.driver.find_element_by_class_name("_7c-t").click()            
             time.sleep(5)
-            self.driver.find_element_by_class_name("_1mf").send_keys("Nice... ")
+            self.driver.find_element_by_class_name("_1mf").send_keys("Sab ko delo aajadi... ")
             time.sleep(4)
             self.driver.find_element_by_class_name("_1mf").send_keys(Keys.ENTER)
         except:
             pass
             time.sleep(20)
-        self.logout()
-
+        self.close_driver()
+    
 
     def replied_comment(self):
-        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/104715371061026?comment_id=104830131049550')
-        time.sleep(7)
+        self.driver.get('https://www.facebook.com/andrew.jhon.90834/posts/104958011036762')
+        time.sleep(10)
         try:
             self.driver.find_element_by_class_name("_6qw5").click()
             time.sleep(4)
@@ -101,18 +130,18 @@ class HandleBrowser():
             self.driver.find_element_by_class_name('_1mf').send_keys(Keys.ENTER)
         except:
             pass
-        self.logout()
+        self.close_driver()
 
 
     def like_on_post(self):
-        url = 'bytecipher/posts/879532995796596?__tn__=-R'
+        url = 'andrew.jhon.90834/posts/104958011036762'
         self.driver.get( 'https://www.facebook.com/{}'.format(url))
         try:
             time.sleep(4)
             self.driver.find_element_by_class_name("_666k").click()
         except:
             pass
-        self.logout()
+        self.close_driver()
 
 
     def logout(self):
@@ -136,7 +165,7 @@ class HandleBrowser():
         file=open( path +"facebook.csv", "r")
         reader = csv.reader(file)
         for line in reader:
-            t=line[0]
+            t=line[1]
             print(t)
 
 
@@ -158,3 +187,5 @@ if __name__ == '__main__':
             browser.replied_comment()
         if arg == 'read':
             browser.read_csv()
+        if arg == 'image':
+            browser.scrap_video()
