@@ -55,7 +55,7 @@ class HandleBrowser():
 
 
     def scarping_post(self):
-        self.driver.get('https://www.facebook.com/groups/2019264428159592/')
+        self.driver.get('https://www.facebook.com/ravi.gurjar.148553')
         time.sleep(5)
         try:
             lenOfPage = self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
