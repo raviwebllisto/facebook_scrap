@@ -31,12 +31,12 @@ class HandleBrowser():
 
     def  scrap_post(self):
         try:
-            images = self.driver.find_elements_by_xpath("//article [@class='jobTuple bgWhite br4 z-depth-1 pl-18']")
+            posts = self.driver.find_elements_by_xpath("//article [@class='jobTuple bgWhite br4 z-depth-1 pl-18']")
             with open('job.csv', mode='w') as facebook_file:
                 scrape_data = csv.writer(facebook_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                for image in images:
-                    post_id = image.get_attribute("data-job-id")
-                    post_text = image.text
+                for post in posts:
+                    post_id = post.get_attribute("data-job-id")
+                    post_text = post.text
                     scrape_data.writerow([post_id, post_text])
 
         except:
